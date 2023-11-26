@@ -42,8 +42,11 @@ class AStar:
                 if neighbor not in self.__open_list:
                     self.__open_list.append(neighbor)
 
-    def get_heuristic_value(self, cell1, cell2):
-        return math.hypot(cell1.x - cell2.x, cell1.y - cell2.y)
+    def get_closed_list(self):
+        return self.__closed_list
+
+    def get_open_list(self):
+        return self.__open_list
 
     def __get_heuristic_value(self, a: Cell, b: Cell):
         return math.hypot(a.x - b.x, a.y - b.y)

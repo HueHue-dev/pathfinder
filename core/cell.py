@@ -42,3 +42,5 @@ class Cell:
     def set_path(self):
         self.color = (0, 89, 255)
 
+    def set_closed(self):
+        self.color = (100, 100, 100)

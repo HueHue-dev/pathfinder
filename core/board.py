@@ -65,3 +65,9 @@ class Board:
             self.grid[cell.row][cell.col].set_path()
             self.draw(win)
 
+    def draw_open_list(self, win, open_list):
+        for cell in open_list:
+            if cell.is_start or cell.is_barrier or cell.is_target:
+                continue
+            self.grid[cell.row][cell.col].set_closed()
+            self.draw(win)

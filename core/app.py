@@ -40,11 +40,7 @@ class App:
                     if event.key == pg.K_SPACE:
                         board.set_neighbours()
                         path = a_star.search(board)
-                        for cell in path:
-                            if cell.is_start or cell.is_barrier or cell.is_target:
-                                continue
-                            board.grid[cell.row][cell.col].set_path()
-                            board.draw(self.screen)
-                            pg.display.update()
                         board.draw_path(self.screen, path)
+                        pg.display.update()
+                        board.draw_open_list(self.screen, a_star.get_open_list())
                         pg.display.update()
