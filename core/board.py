@@ -9,16 +9,16 @@ class Board:
         self.gap = width // rows
         self.color = (255, 255, 255)
         self.grid = []
-        self.has_start_position = False
-        self.has_target_position = False
+        self.start_cell = None
+        self.target_cell = None
         self.set_grid()
 
     def set_grid(self):
-        for x in range(self.rows):
+        for i in range(self.rows):
             self.grid.append([])
-            for y in range(self.rows):
-                cell = Cell(x, y, self.gap)
-                self.grid[x].append(cell)
+            for j in range(self.rows):
+                cell = Cell(i, j, self.gap)
+                self.grid[i].append(cell)
 
     def get_pos(self, pos):
         y, x = pos
@@ -26,6 +26,12 @@ class Board:
         col = x // self.gap
 
         return row, col
+
+    def has_start(self):
+        return self.start_cell is not None
+
+    def has_target(self):
+        return self.target_cell is not None
 
     def draw_grid(self, win):
         for i in range(self.rows):

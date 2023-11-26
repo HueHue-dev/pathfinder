@@ -1,5 +1,7 @@
+import pygame
 import pygame as pg
 from .board import Board
+from .astar import AStar
 
 
 class App:
@@ -11,6 +13,7 @@ class App:
 
     def run(self):
         board = Board(10, self.width)
+        a_star = AStar()
 
         while True:
             board.draw(self.screen)
@@ -19,15 +22,29 @@ class App:
                 if event.type == pg.QUIT:
                     pg.quit()
                     raise SystemExit
-                if pg.mouse.get_pressed()[0]:
+
+                if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                     pos = pg.mouse.get_pos()
                     row, col = board.get_pos(pos)
                     cell = board.grid[row][col]
-                    if not board.has_start_position:
+                    if board.start_cell is None:
                         cell.set_start()
-                        board.has_start_position = True
-                    elif not board.has_target_position:
+                        board.start_cell = cell
+                    elif board.target_cell is None:
                         cell.set_target()
-                        board.has_target_position = True
-                    elif board.has_start_position and board.has_target_position:
+                        board.target_cell = cell
+                    elif board.has_start() and board.has_target():
                         cell.set_barrier()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pg.K_SPACE:
+                        for row in board.grid:
+                            for cell in row:
+                                cell.update_neighbors(board)
+                        path = a_star.search(board)
+                        for cell in path:
+                            if cell.is_start or cell.is_barrier or cell.is_target:
+                                continue
+                            board.grid[cell.row][cell.col].set_path()
+                            board.draw(self.screen)
+                            pg.display.update()
