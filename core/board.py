@@ -75,3 +75,9 @@ class Board:
                 continue
             self.grid[cell.row][cell.col].set_closed()
             self.draw(win)
+
+    def reset(self):
+        self.grid = []
+        self.start_cell = None
+        self.target_cell = None
+        self.__set_grid()

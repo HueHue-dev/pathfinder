@@ -44,3 +44,8 @@ class App:
                         pg.display.update()
                         board.draw_open_list(self.screen, a_star.get_open_list())
                         pg.display.update()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        board.reset()
+                        a_star.reset()

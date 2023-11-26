@@ -9,7 +9,7 @@ class AStar:
         self.__closed_list = []
         self.__path = Path()
 
-    def search(self, board):
+    def search(self, board) -> Path:
         self.__open_list.append(board.start_cell)
         while len(self.__open_list) > 0:
             lowest_index = 0
@@ -48,6 +48,10 @@ class AStar:
     def get_open_list(self):
         return self.__open_list
 
-    def __get_heuristic_value(self, a: Cell, b: Cell):
+    def __get_heuristic_value(self, a: Cell, b: Cell) -> float:
         return math.hypot(a.x - b.x, a.y - b.y)
 
+    def reset(self):
+        self.__open_list = []
+        self.__closed_list = []
+        self.__path = Path()
