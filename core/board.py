@@ -48,8 +48,12 @@ class Board:
 
     def draw_grid(self, win):
         for i in range(self.rows):
+            if i < 1:
+                continue
             pg.draw.line(win, self.color, (0, i * self.gap), (self.width, i * self.gap))
             for j in range(self.rows):
+                if j < 1:
+                    continue
                 pg.draw.line(win, self.color, (j * self.gap, 0), (j * self.gap, self.width))
 
     def draw(self, win):
