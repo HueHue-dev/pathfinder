@@ -42,12 +42,3 @@ class Cell:
     def set_path(self):
         self.color = (0, 89, 255)
 
-    def update_neighbors(self, board):
-        if self.row < (board.rows - 1) and not board.grid[self.row + 1][self.col].is_barrier:  # Down
-            self.neighbors.append(board.grid[self.row + 1][self.col])
-        if self.row > 0 and not board.grid[self.row - 1][self.col].is_barrier:  # Up
-            self.neighbors.append(board.grid[self.row - 1][self.col])
-        if self.col < board.rows - 1 and not board.grid[self.row][self.col + 1].is_barrier:  # Right
-            self.neighbors.append(board.grid[self.row][self.col + 1])
-        if self.col > 0 and not board.grid[self.row][self.col - 1].is_barrier:  # Left
-            self.neighbors.append(board.grid[self.row][self.col - 1])

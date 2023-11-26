@@ -38,9 +38,7 @@ class App:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pg.K_SPACE:
-                        for row in board.grid:
-                            for cell in row:
-                                cell.update_neighbors(board)
+                        board.set_neighbours()
                         path = a_star.search(board)
                         for cell in path:
                             if cell.is_start or cell.is_barrier or cell.is_target:
@@ -48,3 +46,5 @@ class App:
                             board.grid[cell.row][cell.col].set_path()
                             board.draw(self.screen)
                             pg.display.update()
+                        board.draw_path(self.screen, path)
+                        pg.display.update()

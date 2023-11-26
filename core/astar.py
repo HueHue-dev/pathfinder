@@ -1,45 +1,50 @@
 import math
 from .cell import Cell
+from .path import Path
 
 
 class AStar:
     def __init__(self):
-        self.open_list = []
-        self.closed_list = []
-        self.path = []
+        self.__open_list = []
+        self.__closed_list = []
+        self.__path = Path()
 
     def search(self, board):
-        self.open_list.append(board.start_cell)
-        while len(self.open_list) > 0:
+        self.__open_list.append(board.start_cell)
+        while len(self.__open_list) > 0:
             lowest_index = 0
-            for i, cell in enumerate(self.open_list):
-                if cell.f < self.open_list[lowest_index].f:
+            for i, cell in enumerate(self.__open_list):
+                if cell.f < self.__open_list[lowest_index].f:
                     lowest_index = i
 
-            current_cell = self.open_list[lowest_index]
+            current_cell = self.__open_list[lowest_index]
 
             if current_cell.is_target:
                 temp = current_cell
                 while isinstance(temp.previous, Cell):
-                    self.path.append(temp.previous)
+                    self.__path.add(temp.previous)
                     temp = temp.previous
-                return self.path
+                return self.__path
 
-            self.open_list.remove(current_cell)
-            self.closed_list.append(current_cell)
+            self.__open_list.remove(current_cell)
+            self.__closed_list.append(current_cell)
 
             for neighbor in current_cell.neighbors:
-                if neighbor in self.closed_list:
+                if neighbor in self.__closed_list:
                     continue
 
                 neighbor.g = current_cell.g + 1
 
-                neighbor.h = self.get_heuristic_value(neighbor, board.target_cell)
+                neighbor.h = self.__get_heuristic_value(neighbor, board.target_cell)
                 neighbor.f = neighbor.g + neighbor.h
                 neighbor.previous = current_cell
 
-                if neighbor not in self.open_list:
-                    self.open_list.append(neighbor)
+                if neighbor not in self.__open_list:
+                    self.__open_list.append(neighbor)
 
     def get_heuristic_value(self, cell1, cell2):
         return math.hypot(cell1.x - cell2.x, cell1.y - cell2.y)
+
+    def __get_heuristic_value(self, a: Cell, b: Cell):
+        return math.hypot(a.x - b.x, a.y - b.y)
+
