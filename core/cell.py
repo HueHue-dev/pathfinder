@@ -36,9 +36,6 @@ class Cell:
     def set_default(self):
         self.color = (0, 0, 0)
 
-    def is_barrier(self):
-        return self.is_barrier
-
     def set_path(self):
         self.color = (0, 89, 255)
 

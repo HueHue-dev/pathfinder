@@ -4,10 +4,12 @@ version = "0.1.0"
 description = "Pathfinding tool"
 authors = ["Henrik Laun <dev@web-hl.de>"]
 readme = "README.md"
+packages = [{include = "core"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 pygame = "^2.5.2"
+numpy = "^1.26.2"
 
 
 [build-system]

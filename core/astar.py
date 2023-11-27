@@ -1,4 +1,4 @@
-import math
+import numpy as np
 from .cell import Cell
 from .path import Path
 
@@ -35,7 +35,7 @@ class AStar:
 
                 neighbor.g = current_cell.g + 1
 
-                neighbor.h = self.__get_heuristic_value(neighbor, board.target_cell)
+                neighbor.h = self.__get_manhatten_distance(neighbor, board.target_cell)
                 neighbor.f = neighbor.g + neighbor.h
                 neighbor.previous = current_cell
 
@@ -48,8 +48,11 @@ class AStar:
     def get_open_list(self):
         return self.__open_list
 
-    def __get_heuristic_value(self, a: Cell, b: Cell) -> float:
-        return math.hypot(a.x - b.x, a.y - b.y)
+    def __get_manhatten_distance(self, a: Cell, b: Cell) -> float:
+        dx = abs(a.x - b.x)
+        dy = abs(a.y - b.y)
+
+        return dx + dy
 
     def reset(self):
         self.__open_list = []

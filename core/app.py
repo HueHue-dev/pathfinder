@@ -1,4 +1,3 @@
-import pygame
 import pygame as pg
 from .board import Board
 from .astar import AStar
@@ -36,7 +35,7 @@ class App:
                     elif board.has_start() and board.has_target():
                         cell.set_barrier()
 
-                if event.type == pygame.KEYDOWN:
+                if event.type == pg.KEYDOWN:
                     if event.key == pg.K_SPACE:
                         board.set_neighbours()
                         path = a_star.search(board)
@@ -45,7 +44,7 @@ class App:
                         board.draw_open_list(self.screen, a_star.get_open_list())
                         pg.display.update()
 
-                if event.type == pygame.KEYDOWN:
+                if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
                         board.reset()
                         a_star.reset()
