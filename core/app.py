@@ -29,7 +29,7 @@ class App:
             text='Reset',
             manager=self.manager
         )
-        exit = pgui.elements.UIButton(
+        end = pgui.elements.UIButton(
             relative_rect=pg.Rect((10, self.height - 60), (100, 50)),
             text='Exit',
             manager=self.manager
@@ -75,7 +75,7 @@ class App:
                         board.reset()
                         a_star.reset()
 
-                    if event.ui_element == exit:
+                    if event.ui_element == end:
                         pg.quit()
                         raise SystemExit
 
