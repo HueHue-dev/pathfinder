@@ -6,8 +6,7 @@
 ## Setup:
 https://www.jetbrains.com/help/pycharm/poetry.html#poetry-env
 ```bash
-    python -m venv env 
-    source env/bin/activate 
+    poetry shell
     poetry install 
 ```
 
