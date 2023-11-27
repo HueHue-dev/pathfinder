@@ -1,6 +1,7 @@
 import numpy as np
 from .cell import Cell
 from .path import Path
+from .heuristicFactory import HeuristicFactory
 
 
 class AStar:
@@ -8,12 +9,7 @@ class AStar:
         self.__open_list = []
         self.__closed_list = []
         self.__path = Path()
-        self.distance_modes = [
-            'Manhattan',
-            'Diagonal',
-            'Euclidean',
-        ]
-        self.distance_mode = self.get_manhattan_mode()
+        self.__heuristic = HeuristicFactory().get_heuristic()
 
     def search(self, board) -> Path:
         self.__open_list.append(board.start_cell)
@@ -41,7 +37,7 @@ class AStar:
 
                 neighbor.g = current_cell.g + 1
 
-                neighbor.h = self.__get_distance(self.distance_mode, neighbor, board.target_cell)
+                neighbor.h = self.__heuristic.get_distance(neighbor, board.target_cell)
                 neighbor.f = neighbor.g + neighbor.h
                 neighbor.previous = current_cell
 
@@ -59,43 +55,8 @@ class AStar:
         self.__closed_list = []
         self.__path = Path()
 
-    def get_manhattan_mode(self):
-        return self.distance_modes[0]
+    def set_heuristic(self, heuristic: str):
+        self.__heuristic = HeuristicFactory().get_heuristic(heuristic)
 
-    def get_diagonal_mode(self):
-        return self.distance_modes[1]
-
-    def get_euclidean_mode(self):
-        return self.distance_modes[2]
-
-    def __get_distance(self, mode, a: Cell, b: Cell) -> float:
-        if mode == self.get_manhattan_mode():
-            return self.get_manhattan_distance(a, b)
-        if mode == self.get_diagonal_mode():
-            return self.get_diagonal_distance(a, b)
-        if mode == self.get_euclidean_mode():
-            return self.get_euclidean_distance(a, b)
-
-    def mode_is_diagonal(self) -> bool:
-        return self.distance_mode != self.get_manhattan_mode()
-
-    @staticmethod
-    def get_manhattan_distance(a: Cell, b: Cell) -> float:
-        dx = abs(a.x - b.x)
-        dy = abs(a.y - b.y)
-
-        return dx + dy
-
-    @staticmethod
-    def get_euclidean_distance(a: Cell, b: Cell) -> float:
-        dx = abs(a.x - b.x)
-        dy = abs(a.y - b.y)
-
-        return np.sqrt(dx * dx + dy * dy)
-
-    @staticmethod
-    def get_diagonal_distance(a: Cell, b: Cell) -> float:
-        dx = abs(a.x - b.x)
-        dy = abs(a.y - b.y)
-        d2 = 1
-        return np.max([dx, dy]) + d2 + np.min([dx, dy])
+    def get_heuristic(self):
+        return self.__heuristic

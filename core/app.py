@@ -2,6 +2,7 @@ import pygame as pg
 import pygame_gui as pgui
 from .board import Board
 from .astar import AStar
+from .heuristicFactory import HeuristicFactory
 
 
 class App:
@@ -34,8 +35,8 @@ class App:
             manager=self.manager
         )
         pgui.elements.UIDropDownMenu(
-            options_list=a_star.distance_modes,
-            starting_option=a_star.get_manhattan_mode(),
+            options_list=HeuristicFactory.heuristics.keys(),
+            starting_option=HeuristicFactory.get_default(),
             relative_rect=pg.Rect((480, self.height - 140), (200, 50)),
             manager=self.manager
         )
@@ -63,7 +64,7 @@ class App:
 
                 if event.type == pgui.UI_BUTTON_PRESSED:
                     if event.ui_element == search:
-                        board.set_neighbours(a_star.mode_is_diagonal())
+                        board.set_neighbours(a_star.get_heuristic().is_diagonal())
                         path = a_star.search(board)
                         board.draw_path(self.screen, path)
                         pg.display.update()
@@ -79,8 +80,8 @@ class App:
                         raise SystemExit
 
                 if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
-                    a_star.distance_mode = event.text
-                    board.set_neighbours(a_star.mode_is_diagonal())
+                    a_star.set_heuristic(event.text)
+                    board.set_neighbours(a_star.get_heuristic().is_diagonal())
 
             self.manager.update(self.time_delta)
             self.manager.draw_ui(self.screen)
