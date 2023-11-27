@@ -1,4 +1,5 @@
 import pygame as pg
+import pygame_gui as pgui
 from .board import Board
 from .astar import AStar
 
@@ -7,24 +8,49 @@ class App:
     def __init__(self):
         pg.init()
         self.width = 800
-        self.screen = pg.display.set_mode((self.width, self.width))
+        self.height = 960
+        self.screen = pg.display.set_mode((self.width, self.height))
         self.clock = pg.time.Clock()
+        self.time_delta = self.clock.tick(60)
+        self.manager = pgui.UIManager((self.width, self.height))
 
     def run(self):
-        board = Board(10, self.width)
+        board = Board(10)
         a_star = AStar()
+
+        search = pgui.elements.UIButton(
+            relative_rect=pg.Rect((690, self.height - 60), (100, 50)),
+            text='Search',
+            manager=self.manager
+        )
+        reset = pgui.elements.UIButton(
+            relative_rect=pg.Rect((690, self.height - 140), (100, 50)),
+            text='Reset',
+            manager=self.manager
+        )
+        exit = pgui.elements.UIButton(
+            relative_rect=pg.Rect((10, self.height - 60), (100, 50)),
+            text='Exit',
+            manager=self.manager
+        )
+        pgui.elements.UIDropDownMenu(
+            options_list=a_star.distance_modes,
+            starting_option=a_star.get_manhattan_mode(),
+            relative_rect=pg.Rect((480, self.height - 140), (200, 50)),
+            manager=self.manager
+        )
 
         while True:
             board.draw(self.screen)
             pg.display.update()
             for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    pg.quit()
-                    raise SystemExit
+                self.manager.process_events(event)
 
                 if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                     pos = pg.mouse.get_pos()
                     row, col = board.get_pos(pos)
+                    if pos[1] >= board.width:
+                        continue
                     cell = board.grid[row][col]
                     if board.start_cell is None:
                         cell.set_start()
@@ -35,16 +61,27 @@ class App:
                     elif board.has_start() and board.has_target():
                         cell.set_barrier()
 
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_SPACE:
-                        board.set_neighbours()
+                if event.type == pgui.UI_BUTTON_PRESSED:
+                    if event.ui_element == search:
+                        board.set_neighbours(a_star.mode_is_diagonal())
                         path = a_star.search(board)
                         board.draw_path(self.screen, path)
                         pg.display.update()
                         board.draw_open_list(self.screen, a_star.get_open_list())
                         pg.display.update()
 
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_ESCAPE:
+                    if event.ui_element == reset:
                         board.reset()
                         a_star.reset()
+
+                    if event.ui_element == exit:
+                        pg.quit()
+                        raise SystemExit
+
+                if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
+                    a_star.distance_mode = event.text
+                    board.set_neighbours(a_star.mode_is_diagonal())
+
+            self.manager.update(self.time_delta)
+            self.manager.draw_ui(self.screen)
+            pg.display.update()

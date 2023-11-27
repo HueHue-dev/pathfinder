@@ -4,10 +4,10 @@ from .path import Path
 
 
 class Board:
-    def __init__(self, rows, width):
+    def __init__(self, rows):
         self.rows = rows
-        self.width = width
-        self.gap = width // rows
+        self.width = 800
+        self.gap = self.width // rows
         self.color = (255, 255, 255)
         self.grid = []
         self.start_cell = None
@@ -21,17 +21,27 @@ class Board:
                 cell = Cell(i, j, self.gap)
                 self.grid[i].append(cell)
 
-    def set_neighbours(self):
+    def set_neighbours(self, with_diagonal: bool):
         for row in self.grid:
             for cell in row:
                 if cell.row < (self.rows - 1) and not self.grid[cell.row + 1][cell.col].is_barrier:  # Down
                     cell.neighbors.append(self.grid[cell.row + 1][cell.col])
                 if cell.row > 0 and not self.grid[cell.row - 1][cell.col].is_barrier:  # Up
                     cell.neighbors.append(self.grid[cell.row - 1][cell.col])
-                if cell.col < self.rows - 1 and not self.grid[cell.row][cell.col + 1].is_barrier:  # Right
+                if cell.col < (self.rows - 1) and not self.grid[cell.row][cell.col + 1].is_barrier:  # Right
                     cell.neighbors.append(self.grid[cell.row][cell.col + 1])
                 if cell.col > 0 and not self.grid[cell.row][cell.col - 1].is_barrier:  # Left
                     cell.neighbors.append(self.grid[cell.row][cell.col - 1])
+                if not with_diagonal:
+                    continue
+                if cell.row < (self.rows - 1) and cell.col < (self.rows - 1) and not self.grid[cell.row + 1][cell.col + 1].is_barrier:  # Down right
+                    cell.neighbors.append(self.grid[cell.row + 1][cell.col + 1])
+                if cell.row < (self.rows - 1) and cell.col > 0 and not self.grid[cell.row + 1][cell.col - 1].is_barrier:  # Down left
+                    cell.neighbors.append(self.grid[cell.row + 1][cell.col - 1])
+                if cell.row > 0 and cell.col < (self.rows - 1) and not self.grid[cell.row - 1][cell.col + 1].is_barrier:  # Up right
+                    cell.neighbors.append(self.grid[cell.row - 1][cell.col + 1])
+                if cell.row > 0 and cell.col > 0 and not self.grid[cell.row - 1][cell.col - 1].is_barrier:  # Up left
+                    cell.neighbors.append(self.grid[cell.row - 1][cell.col - 1])
 
     def get_pos(self, pos):
         y, x = pos
