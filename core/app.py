@@ -24,6 +24,7 @@ class App:
             text='Search',
             manager=self.manager
         )
+        search.disable()
         reset = pgui.elements.UIButton(
             relative_rect=pg.Rect((690, self.height - 140), (100, 50)),
             text='Reset',
@@ -34,7 +35,7 @@ class App:
             text='Exit',
             manager=self.manager
         )
-        pgui.elements.UIDropDownMenu(
+        dropdown = pgui.elements.UIDropDownMenu(
             options_list=HeuristicFactory.heuristics.keys(),
             starting_option=HeuristicFactory.get_default(),
             relative_rect=pg.Rect((480, self.height - 140), (200, 50)),
@@ -59,6 +60,7 @@ class App:
                     elif board.target_node is None:
                         node.set_target()
                         board.target_node = node
+                        search.enable()
                     elif board.has_start() and board.has_target():
                         node.set_barrier()
 
