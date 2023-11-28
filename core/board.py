@@ -1,5 +1,5 @@
 import pygame as pg
-from .cell import Cell
+from .node import Node
 from .path import Path
 
 
@@ -10,38 +10,38 @@ class Board:
         self.gap = self.width // rows
         self.color = (255, 255, 255)
         self.grid = []
-        self.start_cell = None
-        self.target_cell = None
+        self.start_node = None
+        self.target_node = None
         self.__set_grid()
 
     def __set_grid(self):
         for i in range(self.rows):
             self.grid.append([])
             for j in range(self.rows):
-                cell = Cell(i, j, self.gap)
-                self.grid[i].append(cell)
+                node = Node(i, j, self.gap)
+                self.grid[i].append(node)
 
     def set_neighbours(self, with_diagonal: bool):
         for row in self.grid:
-            for cell in row:
-                if cell.row < (self.rows - 1) and not self.grid[cell.row + 1][cell.col].is_barrier:  # Down
-                    cell.neighbors.append(self.grid[cell.row + 1][cell.col])
-                if cell.row > 0 and not self.grid[cell.row - 1][cell.col].is_barrier:  # Up
-                    cell.neighbors.append(self.grid[cell.row - 1][cell.col])
-                if cell.col < (self.rows - 1) and not self.grid[cell.row][cell.col + 1].is_barrier:  # Right
-                    cell.neighbors.append(self.grid[cell.row][cell.col + 1])
-                if cell.col > 0 and not self.grid[cell.row][cell.col - 1].is_barrier:  # Left
-                    cell.neighbors.append(self.grid[cell.row][cell.col - 1])
+            for node in row:
+                if node.row < (self.rows - 1) and not self.grid[node.row + 1][node.col].is_barrier:  # Down
+                    node.neighbors.append(self.grid[node.row + 1][node.col])
+                if node.row > 0 and not self.grid[node.row - 1][node.col].is_barrier:  # Up
+                    node.neighbors.append(self.grid[node.row - 1][node.col])
+                if node.col < (self.rows - 1) and not self.grid[node.row][node.col + 1].is_barrier:  # Right
+                    node.neighbors.append(self.grid[node.row][node.col + 1])
+                if node.col > 0 and not self.grid[node.row][node.col - 1].is_barrier:  # Left
+                    node.neighbors.append(self.grid[node.row][node.col - 1])
                 if not with_diagonal:
                     continue
-                if cell.row < (self.rows - 1) and cell.col < (self.rows - 1) and not self.grid[cell.row + 1][cell.col + 1].is_barrier:  # Down right
-                    cell.neighbors.append(self.grid[cell.row + 1][cell.col + 1])
-                if cell.row < (self.rows - 1) and cell.col > 0 and not self.grid[cell.row + 1][cell.col - 1].is_barrier:  # Down left
-                    cell.neighbors.append(self.grid[cell.row + 1][cell.col - 1])
-                if cell.row > 0 and cell.col < (self.rows - 1) and not self.grid[cell.row - 1][cell.col + 1].is_barrier:  # Up right
-                    cell.neighbors.append(self.grid[cell.row - 1][cell.col + 1])
-                if cell.row > 0 and cell.col > 0 and not self.grid[cell.row - 1][cell.col - 1].is_barrier:  # Up left
-                    cell.neighbors.append(self.grid[cell.row - 1][cell.col - 1])
+                if node.row < (self.rows - 1) and node.col < (self.rows - 1) and not self.grid[node.row + 1][node.col + 1].is_barrier:  # Down right
+                    node.neighbors.append(self.grid[node.row + 1][node.col + 1])
+                if node.row < (self.rows - 1) and node.col > 0 and not self.grid[node.row + 1][node.col - 1].is_barrier:  # Down left
+                    node.neighbors.append(self.grid[node.row + 1][node.col - 1])
+                if node.row > 0 and node.col < (self.rows - 1) and not self.grid[node.row - 1][node.col + 1].is_barrier:  # Up right
+                    node.neighbors.append(self.grid[node.row - 1][node.col + 1])
+                if node.row > 0 and node.col > 0 and not self.grid[node.row - 1][node.col - 1].is_barrier:  # Up left
+                    node.neighbors.append(self.grid[node.row - 1][node.col - 1])
 
     def get_pos(self, pos):
         y, x = pos
@@ -51,10 +51,10 @@ class Board:
         return row, col
 
     def has_start(self):
-        return self.start_cell is not None
+        return self.start_node is not None
 
     def has_target(self):
-        return self.target_cell is not None
+        return self.target_node is not None
 
     def draw_grid(self, win):
         for i in range(self.rows):
@@ -68,26 +68,26 @@ class Board:
 
     def draw(self, win):
         for row in self.grid:
-            for cell in row:
-                cell.draw(win)
+            for node in row:
+                node.draw(win)
         self.draw_grid(win)
 
     def draw_path(self, win, path: Path):
-        for cell in path.get_path():
-            if cell.is_start or cell.is_barrier or cell.is_target:
+        for node in path.get_path():
+            if node.is_start or node.is_barrier or node.is_target:
                 continue
-            self.grid[cell.row][cell.col].set_path()
+            self.grid[node.row][node.col].set_path()
             self.draw(win)
 
     def draw_open_list(self, win, open_list):
-        for cell in open_list:
-            if cell.is_start or cell.is_barrier or cell.is_target:
+        for node in open_list:
+            if node.is_start or node.is_barrier or node.is_target:
                 continue
-            self.grid[cell.row][cell.col].set_closed()
+            self.grid[node.row][node.col].set_closed()
             self.draw(win)
 
     def reset(self):
         self.grid = []
-        self.start_cell = None
-        self.target_cell = None
+        self.start_node = None
+        self.target_node = None
         self.__set_grid()

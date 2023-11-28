@@ -1,11 +1,11 @@
 from abc import abstractmethod
-from .cell import Cell
+from .node import Node
 
 
 class Heuristic(object):
 
     @abstractmethod
-    def get_distance(self, a: Cell, b: Cell) -> float:
+    def get_distance(self, a: Node, b: Node) -> float:
         pass
 
     @abstractmethod

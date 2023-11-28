@@ -1,13 +1,13 @@
 import numpy as np
 from .heuristic import Heuristic
-from .cell import Cell
+from .node import Node
 
 
 class Euclidean(Heuristic):
     def is_diagonal(self) -> bool:
         return True
 
-    def get_distance(self, a: Cell, b: Cell):
+    def get_distance(self, a: Node, b: Node):
         dx = abs(a.x - b.x)
         dy = abs(a.y - b.y)
 

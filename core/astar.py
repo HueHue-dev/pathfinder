@@ -1,5 +1,5 @@
 import numpy as np
-from .cell import Cell
+from .node import Node
 from .path import Path
 from .heuristicFactory import HeuristicFactory
 
@@ -12,34 +12,34 @@ class AStar:
         self.__heuristic = HeuristicFactory().get_heuristic()
 
     def search(self, board) -> Path:
-        self.__open_list.append(board.start_cell)
+        self.__open_list.append(board.start_node)
         while len(self.__open_list) > 0:
             lowest_index = 0
-            for i, cell in enumerate(self.__open_list):
-                if cell.f < self.__open_list[lowest_index].f:
+            for i, node in enumerate(self.__open_list):
+                if node.f < self.__open_list[lowest_index].f:
                     lowest_index = i
 
-            current_cell = self.__open_list[lowest_index]
+            current_node = self.__open_list[lowest_index]
 
-            if current_cell.is_target:
-                temp = current_cell
-                while isinstance(temp.previous, Cell):
+            if current_node.is_target:
+                temp = current_node
+                while isinstance(temp.previous, Node):
                     self.__path.add(temp.previous)
                     temp = temp.previous
                 return self.__path
 
-            self.__open_list.remove(current_cell)
-            self.__closed_list.append(current_cell)
+            self.__open_list.remove(current_node)
+            self.__closed_list.append(current_node)
 
-            for neighbor in current_cell.neighbors:
+            for neighbor in current_node.neighbors:
                 if neighbor in self.__closed_list:
                     continue
 
-                neighbor.g = current_cell.g + 1
+                neighbor.g = current_node.g + 1
 
-                neighbor.h = self.__heuristic.get_distance(neighbor, board.target_cell)
+                neighbor.h = self.__heuristic.get_distance(neighbor, board.target_node)
                 neighbor.f = neighbor.g + neighbor.h
-                neighbor.previous = current_cell
+                neighbor.previous = current_node
 
                 if neighbor not in self.__open_list:
                     self.__open_list.append(neighbor)

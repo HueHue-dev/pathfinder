@@ -1,7 +1,7 @@
 import pygame as pg
 
 
-class Cell:
+class Node:
     def __init__(self, row, col, width):
         self.row = row
         self.col = col

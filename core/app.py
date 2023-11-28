@@ -52,15 +52,15 @@ class App:
                     row, col = board.get_pos(pos)
                     if pos[1] >= board.width:
                         continue
-                    cell = board.grid[row][col]
-                    if board.start_cell is None:
-                        cell.set_start()
-                        board.start_cell = cell
-                    elif board.target_cell is None:
-                        cell.set_target()
-                        board.target_cell = cell
+                    node = board.grid[row][col]
+                    if board.start_node is None:
+                        node.set_start()
+                        board.start_node = node
+                    elif board.target_node is None:
+                        node.set_target()
+                        board.target_node = node
                     elif board.has_start() and board.has_target():
-                        cell.set_barrier()
+                        node.set_barrier()
 
                 if event.type == pgui.UI_BUTTON_PRESSED:
                     if event.ui_element == search:
