@@ -41,3 +41,6 @@ class Node:
 
     def set_closed(self):
         self.color = (100, 100, 100)
+
+    def set_open(self):
+        self.color = (152, 179, 0)

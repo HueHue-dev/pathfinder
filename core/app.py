@@ -67,9 +67,8 @@ class App:
                         board.set_neighbours(a_star.get_heuristic().is_diagonal())
                         path = a_star.search(board)
                         board.draw_path(self.screen, path)
-                        pg.display.update()
                         board.draw_open_list(self.screen, a_star.get_open_list())
-                        pg.display.update()
+                        board.draw_closed_list(self.screen, a_star.get_closed_list(), path)
 
                     if event.ui_element == reset:
                         board.reset()
