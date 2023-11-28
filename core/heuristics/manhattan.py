@@ -1,5 +1,5 @@
 from .heuristic import Heuristic
-from .node import Node
+from ..node import Node
 
 
 class Manhattan(Heuristic):

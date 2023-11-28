@@ -1,6 +1,6 @@
 import numpy as np
 from .heuristic import Heuristic
-from .node import Node
+from ..node import Node
 
 
 class Diagonal(Heuristic):

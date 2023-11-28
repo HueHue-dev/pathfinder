@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from .node import Node
+from ..node import Node
 
 
 class Heuristic(object):

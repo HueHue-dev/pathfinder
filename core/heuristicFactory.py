@@ -1,6 +1,6 @@
-from .diagonal import Diagonal
-from .manhattan import Manhattan
-from .euclidean import Euclidean
+from .heuristics.diagonal import Diagonal
+from .heuristics.manhattan import Manhattan
+from .heuristics.euclidean import Euclidean
 
 
 class HeuristicFactory:
