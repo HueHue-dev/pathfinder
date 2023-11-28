@@ -16,10 +16,18 @@ class Node:
         self.previous = None,
         self.f = 0
         self.g = 0
-        self.g = 0
+        self.h = 0
+        self.__font = pg.font.SysFont(None, 17)
 
-    def draw(self, win):
+    def draw(self, win, show_values):
         pg.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
+        if show_values:
+            f_text = self.__font.render('f: ' + str(self.f), True, (255, 255, 255))
+            win.blit(f_text, (self.x + 10, self.y + 10))
+            g_text = self.__font.render('g: ' + str(self.g), True, (255, 255, 255))
+            win.blit(g_text, (self.x + 50, self.y + 10))
+            h_text = self.__font.render('h: ' + str(self.h), True, (255, 255, 255))
+            win.blit(h_text, (self.x + (self.width / 2) - 15, self.y + 40))
 
     def set_start(self):
         self.color = (0, 128, 34)

@@ -66,32 +66,29 @@ class Board:
                     continue
                 pg.draw.line(win, self.color, (j * self.gap, 0), (j * self.gap, self.width))
 
-    def draw(self, win):
+    def draw(self, win, show_values: bool):
         for row in self.grid:
             for node in row:
-                node.draw(win)
+                node.draw(win, show_values)
         self.draw_grid(win)
 
-    def draw_path(self, win, path: Path):
+    def draw_path(self, path: Path):
         for node in path.get_path():
             if node.is_start or node.is_barrier or node.is_target:
                 continue
             self.grid[node.row][node.col].set_path()
-            self.draw(win)
 
-    def draw_closed_list(self, win, closed_list, path: Path):
+    def draw_closed_list(self, closed_list, path: Path):
         for node in closed_list:
             if node.is_start or node.is_barrier or node.is_target or node in path.get_path():
                 continue
             self.grid[node.row][node.col].set_open()
-            self.draw(win)
 
-    def draw_open_list(self, win, open_list):
+    def draw_open_list(self, open_list):
         for node in open_list:
             if node.is_start or node.is_barrier or node.is_target:
                 continue
             self.grid[node.row][node.col].set_closed()
-            self.draw(win)
 
     def reset(self):
         self.grid = []
