@@ -1,18 +1,7 @@
 # Pathfinder
-## Requirements
-* Python >= 3.11
-* poetry https://python-poetry.org/
 
-## Setup:
-https://www.jetbrains.com/help/pycharm/poetry.html#poetry-env
 ```bash
-    poetry shell
-    poetry install 
+  python3.10 -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements.txt
 ```
-
-
-
-
-
-
-

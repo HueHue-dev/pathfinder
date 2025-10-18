@@ -1,8 +1,8 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from ..node import Node
 
 
-class Heuristic(object):
+class Heuristic(ABC):
 
     @abstractmethod
     def get_distance(self, a: Node, b: Node) -> float:
