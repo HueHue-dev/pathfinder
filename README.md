@@ -9,7 +9,6 @@
 - **Multiple Heuristics**: Choose between Manhattan, Euclidean, and Diagonal distance heuristics
 - **Interactive Grid**: Click to place start/end points and draw obstacles
 - **Real-time Visualization**: Watch the algorithm explore nodes (open/closed lists) and calculate the optimal path
-- **Educational Tool**: Perfect for learning and understanding how A* pathfinding works with f, g, and h values
 
 ## Quick Start
 ```bash
