@@ -1,18 +1,20 @@
 import pygame as pg
 from .node import Node
 from .path import Path
+from .config import Config
 
 
 class Board:
     def __init__(self, rows):
         self.rows = rows
-        self.width = 800
+        self.width = Config.BOARD_WIDTH
         self.gap = self.width // rows
-        self.color = (255, 255, 255)
+        self.color = Config.COLOR_GRID
         self.grid = []
         self.start_node = None
         self.target_node = None
         self.__set_grid()
+        self.__font = pg.font.SysFont(None, 17)
 
     def __set_grid(self):
         for i in range(self.rows):
@@ -24,6 +26,7 @@ class Board:
     def set_neighbours(self, with_diagonal: bool):
         for row in self.grid:
             for node in row:
+                node.neighbors = []  # Clear previous neighbors
                 if node.row < (self.rows - 1) and not self.grid[node.row + 1][node.col].is_barrier:  # Down
                     node.neighbors.append(self.grid[node.row + 1][node.col])
                 if node.row > 0 and not self.grid[node.row - 1][node.col].is_barrier:  # Up
@@ -69,7 +72,7 @@ class Board:
     def draw(self, win, show_values: bool):
         for row in self.grid:
             for node in row:
-                node.draw(win, show_values)
+                node.draw(win, show_values, self.__font)
         self.draw_grid(win)
 
     def draw_path(self, path: Path):

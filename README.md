@@ -12,16 +12,16 @@
 
 ## Quick Start
 ```bash
-python3.10 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python main.py
+python3.11 main.py
 ```
 
 ## How it works
 
 ---
-**Screenshot Tip**: Capture a moment during pathfinding showing:
+**Screenshot**:
 - The green start node and red target node
 - White barrier walls creating obstacles
 - Yellow/green nodes showing the open list (being explored)
