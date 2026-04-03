@@ -1,9 +1,10 @@
+from typing import List, Optional
 import pygame as pg
 from .config import Config
 
 
 class Node:
-    def __init__(self, row, col, width):
+    def __init__(self, row: int, col: int, width: int):
         self.row = row
         self.col = col
         self.x = row * width
@@ -13,13 +14,13 @@ class Node:
         self.is_start = False
         self.is_barrier = False
         self.is_target = False
-        self.neighbors = []
-        self.previous = None
-        self.f = 0
-        self.g = 0
-        self.h = 0
+        self.neighbors: List['Node'] = []
+        self.previous: Optional['Node'] = None
+        self.f: float = 0.0
+        self.g: float = 0.0
+        self.h: float = 0.0
 
-    def draw(self, win, show_values, font):
+    def draw(self, win: pg.Surface, show_values: bool, font: pg.font.Font):
         pg.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
         if show_values:
             f_text = font.render('f: ' + str(self.f), True, Config.COLOR_TEXT)

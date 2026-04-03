@@ -1,20 +1,22 @@
+from typing import List, Tuple, Set, Optional, Union
 import heapq
 from .node import Node
 from .path import Path
 from .heuristicFactory import HeuristicFactory
+from .board import Board
 
 
 class AStar:
     def __init__(self):
-        self.__open_list = []
-        self.__closed_list = set()
-        self.__path = Path()
+        self.__open_list: List[Tuple[float, int, Node]] = []
+        self.__closed_list: Set[Node] = set()
+        self.__path: Path = Path()
         self.__heuristic = HeuristicFactory().get_heuristic()
 
-    def search(self, board) -> Path:
+    def search(self, board: Board) -> Optional[Path]:
         count = 0
-        heapq.heappush(self.__open_list, (0, count, board.start_node))
-        open_set = {board.start_node}
+        heapq.heappush(self.__open_list, (0.0, count, board.start_node))
+        open_set: Set[Node] = {board.start_node}
 
         while self.__open_list:
             current_node = heapq.heappop(self.__open_list)[2]
@@ -42,13 +44,14 @@ class AStar:
                     neighbor.f = neighbor.g + neighbor.h
                     if neighbor not in open_set:
                         count += 1
-                        heapq.heappush(self.__open_list, (neighbor.f, count, neighbor))
+                        heapq.heappush(self.__open_list, (float(neighbor.f), count, neighbor))
                         open_set.add(neighbor)
+        return None
 
-    def get_closed_list(self):
+    def get_closed_list(self) -> List[Node]:
         return list(self.__closed_list)
 
-    def get_open_list(self):
+    def get_open_list(self) -> List[Node]:
         # We need to return the nodes from the heap for visualization
         return [item[2] for item in self.__open_list]
 

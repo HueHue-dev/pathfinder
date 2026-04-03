@@ -1,3 +1,4 @@
+from typing import List, Tuple, Optional
 import pygame as pg
 from .node import Node
 from .path import Path
@@ -5,14 +6,14 @@ from .config import Config
 
 
 class Board:
-    def __init__(self, rows):
+    def __init__(self, rows: int):
         self.rows = rows
         self.width = Config.BOARD_WIDTH
         self.gap = self.width // rows
         self.color = Config.COLOR_GRID
-        self.grid = []
-        self.start_node = None
-        self.target_node = None
+        self.grid: List[List[Node]] = []
+        self.start_node: Optional[Node] = None
+        self.target_node: Optional[Node] = None
         self.__set_grid()
         self.__font = pg.font.SysFont(None, 17)
 
@@ -46,10 +47,10 @@ class Board:
                 if node.row > 0 and node.col > 0 and not self.grid[node.row - 1][node.col - 1].is_barrier:  # Up left
                     node.neighbors.append(self.grid[node.row - 1][node.col - 1])
 
-    def get_pos(self, pos):
-        y, x = pos
-        row = y // self.gap
-        col = x // self.gap
+    def get_pos(self, pos: Tuple[int, int]) -> Tuple[int, int]:
+        x, y = pos
+        row = x // self.gap
+        col = y // self.gap
 
         return row, col
 

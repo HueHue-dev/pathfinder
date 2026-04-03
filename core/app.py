@@ -81,7 +81,7 @@ class App:
 
     def _handle_mouse_click(self, event):
         pos = pg.mouse.get_pos()
-        if pos[1] >= self.board.width:
+        if pos[1] >= self.board.width or pos[0] >= self.board.width:
             return
             
         row, col = self.board.get_pos(pos)
