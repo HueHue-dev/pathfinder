@@ -5,13 +5,11 @@ import os
 os.environ['SDL_VIDEODRIVER'] = 'dummy'
 import pygame as pg
 
-# Initialize pygame for font system (required by Board)
 pg.init()
 pg.font.init()
 
 from core.board import Board
 from core.astar import AStar
-from core.node import Node
 
 def test_astar_simple_path():
     board = Board(10)
@@ -47,7 +45,6 @@ def test_astar_no_path():
     board.start_node = start
     board.target_node = target
     
-    # Create a wall
     for i in range(5):
         board.grid[i][2].set_barrier()
     
@@ -68,7 +65,6 @@ def test_astar_diagonal_path():
     board.start_node = start
     board.target_node = target
     
-    # Test with diagonal allowed
     astar.set_heuristic("Diagonal")
     
     board.set_neighbours(with_diagonal=True)

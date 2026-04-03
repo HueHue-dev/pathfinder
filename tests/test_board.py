@@ -5,7 +5,6 @@ import os
 os.environ['SDL_VIDEODRIVER'] = 'dummy'
 import pygame as pg
 
-# Initialize pygame for font system (required by Board)
 pg.init()
 pg.font.init()
 
