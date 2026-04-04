@@ -70,10 +70,18 @@ class Board:
                     continue
                 pg.draw.line(win, self.color, (j * self.gap, 0), (j * self.gap, self.width))
 
-    def draw(self, win, show_values: bool):
+    def draw(self, win: pg.Surface, show_values: bool, open_list: List[Node], closed_list: List[Node], path: Optional[Path]):
         for row in self.grid:
             for node in row:
                 node.draw(win, show_values, self.__font)
+        
+        if path:
+            self.draw_path(path)
+        if open_list:
+            self.draw_open_list(open_list)
+        if closed_list and path:
+            self.draw_closed_list(closed_list, path)
+
         self.draw_grid(win)
 
     def draw_path(self, path: Path):
@@ -93,6 +101,21 @@ class Board:
             if node.is_start or node.is_barrier or node.is_target:
                 continue
             self.grid[node.row][node.col].set_closed()
+
+    def set_start_node(self, node: Node):
+        if self.start_node is not None:
+            self.start_node.set_default()
+        node.set_start()
+        self.start_node = node
+
+    def set_target_node(self, node: Node):
+        if self.target_node is not None:
+            self.target_node.set_default()
+        node.set_target()
+        self.target_node = node
+
+    def set_barrier(self, node: Node):
+        node.set_barrier()
 
     def reset(self):
         self.grid = []
