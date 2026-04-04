@@ -12,6 +12,7 @@ class App:
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((Config.WIDTH, Config.HEIGHT))
+        pg.display.set_caption(Config.APP_TITLE)
         self.clock = pg.time.Clock()
         self.manager = pgui.UIManager((Config.WIDTH, Config.HEIGHT))
         

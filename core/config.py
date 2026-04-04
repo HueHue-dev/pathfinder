@@ -1,4 +1,5 @@
 class Config:
+    APP_TITLE = "Pathfinding Visualizer"
     WIDTH = 800
     HEIGHT = 960
     BOARD_WIDTH = WIDTH
